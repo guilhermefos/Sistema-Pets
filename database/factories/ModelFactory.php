@@ -19,3 +19,19 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Owner::class, function(Faker\Generator $faker) {
+	return [
+		'name' => $faker->firstName,
+		'phone' => $fanker->phone
+		];
+});
+
+$factory->define(App\Pet::class, function(Facker\Generator $faker) {
+	return [
+		'name' => $faker->name,
+		'gender' => $faker->randomElement(['macho', 'femea']),
+		'born' => $faker->date()
+		'owner_id' => factory(App\Owner::class)->create()->id,
+	];
+});
