@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetTest extends TestCase
 {
+	use DatabaseMigrations;
+
     public function testIndex()
     {
     	$pets = factory(App\Pet::class)->all();
