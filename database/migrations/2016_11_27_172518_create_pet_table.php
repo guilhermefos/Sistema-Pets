@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOwnersTable extends Migration
+class CreatePetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,13 @@ class CreateOwnersTable extends Migration
      */
     public function up()
     {
-        Schema::create('owners', function (Blueprint $table) {
+        Schema::create('pets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('phone');
+            $table->string('name')->index();
+            $table->enum('gender', ['macho', 'femea']);
+            $table->date('born');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +29,6 @@ class CreateOwnersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('owners');
+        Schema::drop('pets');
     }
 }
