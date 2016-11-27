@@ -23,15 +23,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Owner::class, function(Faker\Generator $faker) {
 	return [
 		'name' => $faker->firstName,
-		'phone' => $fanker->phone
+		'phone' => $faker->phoneNumber
 		];
 });
 
-$factory->define(App\Pet::class, function(Facker\Generator $faker) {
+$factory->define(App\Pet::class, function(Faker\Generator $faker) {
 	return [
 		'name' => $faker->name,
 		'gender' => $faker->randomElement(['macho', 'femea']),
-		'born' => $faker->date()
-		'owner_id' => factory(App\Owner::class)->create()->id,
+		'born' => $faker->date(),
+		'owner_id' => factory(App\Owner::class)->create()->id
 	];
 });
