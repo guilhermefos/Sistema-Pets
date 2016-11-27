@@ -13,6 +13,6 @@ class PetTest extends TestCase
      */
     public function testUrl()
     {
-        $this->visit('/pets')
+        $this->visit('/pets');
     }
 }
