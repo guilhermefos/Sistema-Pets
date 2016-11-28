@@ -106,25 +106,6 @@ class PetController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    public function search()
-    {
-        $search = \Request::get('search');
-
-        $pet = \App\Pet::where('name', 'like', '%'.$search.'%')->orderBy('id');
-        return view('layout.select', ['pet' => $pet]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
