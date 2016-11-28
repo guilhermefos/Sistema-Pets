@@ -17,6 +17,8 @@ class CreatePetTable extends Migration
             $table->string('name')->index();
             $table->enum('gender', ['macho', 'femea']);
             $table->date('born');
+            $table->string('owner');
+            $table->string('phone');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -36,16 +36,14 @@ class PetController extends Controller
      */
     public function index()
     {
-        $this->pets = \App\Pet::all();
+        $search = \Request::get('search');
 
-        /**foreach ($this->pets as $pet) {
-
-            $petOwner = $pet->owners->toArray();
-
-            var_dump($pet->name .', '. $pet->born .', '. $pet->gender .' | dono(a) '. $petOwner[0]['name'] .', '. $petOwner[0]['phone']);
+        if($search !== null){
+            $pets = \App\Pet::where('name', 'like','%'.$search.'%')->get();
+        } else {
+            $pets = \App\Pet::all();
         }
-        die(); **/
-        return view('layout.pets', ['pets' => $this->pets]);
+        return view('layout.list', ['pets' => $pets]);
     }
 
     /**
@@ -55,7 +53,7 @@ class PetController extends Controller
      */
     public function create()
     {
-        //
+        return view('layout.insert');
     }
 
     /**
@@ -68,10 +66,8 @@ class PetController extends Controller
     {
         $this->validation($request);
 
-        $pet    = $this->createPet($request);
-        $owner  = $this->createOwner($request);
-
-        $pet->owners()->attach($owner->id);
+        if ($pet = $this->createPet($request))
+            return $this->index();
     }
 
     /**
@@ -86,21 +82,9 @@ class PetController extends Controller
         return \App\Pet::updateOrCreate([
                 'name'      => $pet->name,
                 'gender'    => $pet->gender,
-                'born'      => $pet->born
-            ]);
-    }
-
-    /**
-     * Create or update Owner.
-     *
-     * @param \Illuminate\Http\Request  $owner
-     * @return App\Owner
-     */
-    private function createOwner($owner)
-    {
-        return \App\Owner::updateOrCreate([
-                'name'   => $owner->owner,
-                'phone'  => $owner->phone,
+                'born'      => $pet->born,
+                'owner'     => $pet->owner,
+                'phone'     => $pet->phone
             ]);
     }
 
@@ -132,6 +116,14 @@ class PetController extends Controller
         //
     }
 
+    public function search()
+    {
+        $search = \Request::get('search');
+
+        $pet = \App\Pet::where('name', 'like', '%'.$search.'%')->orderBy('id');
+        return view('layout.select', ['pet' => $pet]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -140,7 +132,8 @@ class PetController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pet = \App\Pet::find($id);
+        return view('layout.edit', ['pet' => $pet]);
     }
 
     /**
@@ -152,7 +145,15 @@ class PetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        \App\Pet::where('id', $id)
+            ->update([
+                'name'   => $request->name,
+                'gender' => $request->gender,
+                'born'   => $request->born,
+                'owner'  => $request->owner,
+                'phone'  => $request->phone,
+                ]);
+        return $this->index();
     }
 
     /**
@@ -163,6 +164,7 @@ class PetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Pet::destroy($id);
+        return $this->index();
     }
 }

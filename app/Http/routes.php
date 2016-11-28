@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('pets', 'PetController');
+Route::get('pets/search', 'PetController@search')->name('pets.search');
